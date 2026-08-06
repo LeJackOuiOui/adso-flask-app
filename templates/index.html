@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Aprendices SENA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Registro de Aprendices</h2>
+        <form action="/registrar" method="POST">
+            <input type="text" name="nombre_completo" placeholder="Nombre Completo" required>
+            <input type="text" name="numero_documento" placeholder="Número de Documento" required>
+            <input type="text" name="ficha" placeholder="Número de Ficha" required>
+            <button type="submit">Guardar Aprendiz</button>
+        </form>
+
+        <h2>Lista de Aprendices Registrados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Completo</th>
+                    <th>Documento</th>
+                    <th>Ficha</th>
+                    <th>Fecha Registro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aprendiz in aprendices %}
+                <tr>
+                    <td>{{ aprendiz.id }}</td>
+                    <td>{{ aprendiz.nombre_completo }}</td>
+                    <td>{{ aprendiz.numero_documento }}</td>
+                    <td>{{ aprendiz.ficha }}</td>
+                    <td>{{ aprendiz.creado_en }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" style="text-align: center;">No hay registros cargados aún.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

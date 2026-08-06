@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS adso_db;
+USE adso_db;
+
+CREATE TABLE IF NOT EXISTS aprendices (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_completo VARCHAR(100) NOT NULL,
+    numero_documento VARCHAR(20) NOT NULL UNIQUE,
+    ficha VARCHAR(20) NOT NULL
+);
