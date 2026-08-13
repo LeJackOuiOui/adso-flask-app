@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   nginx:
     image: nginx:alpine
@@ -14,6 +16,7 @@ services:
   servidor-bd:
     image: mysql:8.0
     container_name: servidor-bd
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -21,27 +24,54 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - red-cba
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   app_backend:
-    build: .
+    image: lejackouioui/adso-flask-app:latest
     container_name: flask_app
+    restart: always
+    ports:
+      - "80:5050"
     networks:
       - red-cba
     environment:
       FLASK_ENV: development
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_HOST: servidor-bd
       MYSQL_USER: ${MYSQL_USER}
     depends_on:
-      - servidor-bd
-    volumes:
-      - .:/home/myapp
+      servidor-bd:
+        condition: service_healthy
+
+    uptime-kuma:
+      image: louislam/uptime-kuma:1
+      container_name: uptime-kuma
+      restart: always
+      ports:
+        - "3001:3001"
+      volumes:
+        - uptime-kuma-data:/app/data
+      networks:
+        - red-cba
 
 networks:
   red-cba:
-    external: true
 
 volumes:
   mysql_data:
-    name: mysql_data
+  uptime-kuma-data:
