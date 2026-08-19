@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   nginx-proxy-manager:
-    image: nginx:alpine
+    image: "jc21/nginx-proxy-manager:latest"
     container_name: proxy_nginx
     ports:
       - "80:80"

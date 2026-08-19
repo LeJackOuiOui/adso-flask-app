@@ -24,3 +24,14 @@ jobs:
           context: .
           push: true
           tags: lejackouioui/adso-flask-app:latest
+
+      - name: Desplegar en servidor cloud
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          user: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd ~/adso-flask-app
+            docker compose pull app_backend
+            docker compose up -d
