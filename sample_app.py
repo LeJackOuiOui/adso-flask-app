@@ -4,11 +4,14 @@ import pymysql
 
 app = Flask(__name__)
 
+# Fallo Bandit B105
+MYSQL_ROOT_PASSWORD = "sena123"
+
 # Configuración de conexión leyendo las variables MYSQL_ de tu .env
 DB_CONFIG = {
     'host': os.environ.get('MYSQL_HOST', 'servidor-bd'),
     'user': os.environ.get('MYSQL_USER', 'root'),
-    'password': os.environ.get('MYSQL_ROOT_PASSWORD', 'sena123'),
+    'password': os.environ.get(MYSQL_ROOT_PASSWORD),
     'database': os.environ.get('MYSQL_DATABASE', 'adso_db'),
     'cursorclass': pymysql.cursors.DictCursor,
     'autocommit': True
@@ -37,12 +40,8 @@ def init_db():
 
 @app.route('/', methods=['GET'])
 def index():
-    connection = get_db_connection()
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM aprendices ORDER BY id DESC")
-        aprendices = cursor.fetchall()
-    connection.close()
-    return render_template('index.html', aprendices=aprendices)
+    # Fallo Pytest
+    return "Error simulado de servidor", 500
 
 @app.route('/registrar', methods=['POST'])
 def registrar():
@@ -60,6 +59,5 @@ def registrar():
 
 if __name__ == '__main__':
     init_db()
-    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ['true', '1']
-    host_ip = os.getenv('FLASK_HOST', '127.0.0.1')
-    app.run(host=host_ip, port=5050, debug=debug_mode)
+    # Fallo Bandit B201
+    app.run(host='0.0.0.0', port=5050, debug=True)
