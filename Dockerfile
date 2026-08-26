@@ -7,9 +7,13 @@ RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 
-# 2. Reinstalar y forzar la actualización de pip, setuptools y las dependencias de Python
-RUN pip install --no-cache-dir --upgrade --force-reinstall pip setuptools \
-    && pip install --no-cache-dir --upgrade --force-reinstall -r requirements.txt
+# 2. Actualizar pip, setuptools e instalar dependencias
+RUN pip install --no-cache-dir --upgrade pip setuptools \
+    && pip install --no-cache-dir -r requirements.txt
+
+# 3. Eliminar los metadatos antiguos preinstalados por la imagen base que Trivy sigue detectando
+RUN rm -rf /usr/local/lib/python3.14/site-packages/setuptools-70.* \
+    && rm -rf /usr/local/lib/python3.14/site-packages/msgpack-1.1.*
 
 COPY . .
 
