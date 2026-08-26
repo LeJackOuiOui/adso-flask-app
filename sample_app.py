@@ -64,6 +64,5 @@ def registrar():
 
 if __name__ == '__main__':
     init_db()
-    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ['true', '1']
-    host_ip = os.getenv('FLASK_HOST', '127.0.0.1')
-    app.run(host=host_ip, port=5050, debug=debug_mode)
+    modo_debug = os.getenv("FLASK_DEBUG", "True").lower() == "true"
+    app.run(host='0.0.0.0', port=5050, debug=modo_debug) # nosec B104
