@@ -2,13 +2,14 @@ FROM python:3.14-slim
 
 WORKDIR /home/myapp
 
-# Actualiza paquetes del SO para parchear vulnerabilidades conocidas
+# 1. Actualizar paquetes del sistema operativo
 RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir --upgrade pip setuptools
-RUN pip install --no-cache-dir -r requirements.txt
+# 2. Reinstalar y forzar la actualización de pip, setuptools y las dependencias de Python
+RUN pip install --no-cache-dir --upgrade --force-reinstall pip setuptools \
+    && pip install --no-cache-dir --upgrade --force-reinstall -r requirements.txt
 
 COPY . .
 
