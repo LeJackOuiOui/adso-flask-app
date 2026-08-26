@@ -30,7 +30,7 @@ jobs:
         run: pytest
 
   build-and-push:
-    needs: test-and-security
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Descargar codigo
@@ -54,7 +54,7 @@ jobs:
       - name: Escanear contenedor con trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "blackt1221/mi-api:latest"
+          image-ref: "lejackouioui/adso-flask-app:latest"
           format: "table"
           exit-code: "1"
           ignore-unfixed: true
