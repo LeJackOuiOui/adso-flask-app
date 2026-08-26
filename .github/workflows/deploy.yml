@@ -2,7 +2,9 @@ name: Publicar Imagen en Docker Hub
 
 on:
   push:
-    branches: ["main", "master"]
+    branches: ["main", "master", "feature/vulnerabilidades"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
