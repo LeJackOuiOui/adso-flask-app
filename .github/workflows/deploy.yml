@@ -59,7 +59,7 @@ jobs:
           exit-code: "1"
           ignore-unfixed: true
           vulns-type: "os,library"
-          severity-threshold: "CRITICAL"
+          severity: "CRITICAL,HIGH"
 
       - name: Subir la imagen a Docker Hub
         run: docker push lejackouioui/adso-flask-app:latest
